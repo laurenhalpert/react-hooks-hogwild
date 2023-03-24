@@ -119,6 +119,10 @@ function App() {
 			<button onClick={sortName}>Sort by Name</button>
 			<button onClick={sortWeight}>Sort by Weight</button>
 			<HogForm onFormSubmit={handleSubmit}/>
+			<p></p>
+			<p></p>
+			<p></p>
+			<p></p>
 			<div className="ui grid container">
 				{pigs.map(hog =>
 				 	<HogTile key={hog.name} onHide={()=>handleHide(hog.name)} name={hog.name} image={hog.image} specialty={hog.specialty} weight={hog.weight} greased={hog.greased} highestMedalAchieved={hog["highest medal achieved"]}/>)}

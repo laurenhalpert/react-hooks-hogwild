@@ -23,7 +23,7 @@ function HogForm({ onFormSubmit }) {
 
 
     return(
-        <form onSubmit={(event, item)=>onFormSubmit(event, newPigItem)}>
+        <form style={{padding: "30px"}} onSubmit={(event, item)=>onFormSubmit(event, newPigItem)}>
             <input onChange={(event, setter)=> handleChange(event,setName)} type="text" name="name" placeholder="Name..." value={name}></input>
             <input onChange={(event, setter)=> handleChange(event, setImage)}type="text" name="image" placeholder="Image URL..." value={image}></input>
             <input onChange={(event, setter)=> handleChange(event, setSpecialty)} type="text" name="specialty" placeholder="Specialty..." value={specialty}></input>
