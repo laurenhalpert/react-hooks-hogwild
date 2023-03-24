@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import DisplayDetails from "./DisplayDetails.js"
 
 
-function HogTile({ name, image, specialty, greased, weight, highestMedalAchieved }) {
+function HogTile({ onHide, name, image, specialty, greased, weight, highestMedalAchieved }) {
     const [isClicked, setIsClicked] = useState(false)
     function handleClick() {
         setIsClicked(!isClicked)
@@ -13,7 +13,7 @@ function HogTile({ name, image, specialty, greased, weight, highestMedalAchieved
             <p>{name}</p>
             <img src={image} alt="pig"></img>
             {isClicked? <DisplayDetails specialty={specialty} greased={greased} weight={weight} highestMedalAchieved={highestMedalAchieved} /> : null}
-            
+            <button onClick={onHide}>Hide Pig</button>
         </div>
     )
 }

@@ -19,6 +19,27 @@ BONUS elements:
 isHidden (~)
 visibleHogs(~)
 
+to hide a hog, user clicks a button on the hog tile and pigs state gets set to filtered HogList
+-setHide and hide need to be in app
+
+newPigItem = {
+	name: newName,
+	image: newImage,
+	specialty: newSpecialty,
+	weight: newWeight,
+	highestMedalAchieved: newHighestMedalAchieved
+}
+setPigs([...pigs, newPigItem])
+function handleSubmit(event, newPigItem){
+	event.preventDefault();
+	setPigs([...pigs, newPigItem])
+}
+-onSubmit
+--prevent default
+--create newPigItem to get passed into a function
+	---in App onFormSubmit={handleSubmit}
+	---in Form onSubmit={()=> onFormSubmit(newPigItem)}
+
 */
 
 import React, {useState} from "react";
@@ -26,6 +47,7 @@ import Nav from "./Nav";
 import HogTile from "./HogTile";
 import Filter from "./Filter";
 import hogs from "../porkers_data";
+import HogForm from "./HogForm";
 
 
 function App() {
@@ -34,16 +56,21 @@ function App() {
 	const [isSorted, setIsSorted] = useState(false)
 	const [isName, setIsName] = useState(false)
 	
-	const greasedPigs= hogs.filter(hog=> hog.greased === true )
-	console.log(greasedPigs)
-	const hogsVisible = isGreased? greasedPigs: pigs
+	
+	function handleHide(name) {
+		setPigs(pigs.filter(pig => pig.name !== name))
+		
+	}
+	
 	
 	function handleFilter() {
+		const greasedPigs= hogs.filter(hog=> hog.greased === true )
+		
 		setPigs(greasedPigs)
 		setIsGreased(!isGreased)
 	}
 	
-	const hogsToDisplay = isSorted? (isName? sortName(): sortWeight()) : hogsVisible
+	//const hogsToDisplay = isSorted? (isName? sortName(): sortWeight()) : hogsVisible
 
 
 	function sortName() {
@@ -55,10 +82,10 @@ function App() {
 			}
 			return 0
 		}
-		const sortedHogs = hogsVisible.sort(compare)
+		const sortedHogs = pigs.sort(compare)
+		setPigs(sortedHogs)
 		setIsSorted(!isSorted)
 		setIsName(!isName)
-		return sortedHogs;
 		
 	}
 
@@ -71,12 +98,18 @@ function App() {
 			}
 			return 0
 		}
-		const sortedWeightHogs = hogsVisible.sort(compareWeight)
+		const sortedWeightHogs = pigs.sort(compareWeight)
 		console.log(sortedWeightHogs)
 		setIsSorted(!isSorted)
+		setPigs(sortedWeightHogs)
 		return sortedWeightHogs;
 		
 		
+	}
+
+	function handleSubmit(event, newPigItem){
+		event.preventDefault();
+		setPigs([...pigs, newPigItem])
 	}
 	
 	return (
@@ -85,9 +118,10 @@ function App() {
 			<Filter onSetGreasedPigs={handleFilter}/>
 			<button onClick={sortName}>Sort by Name</button>
 			<button onClick={sortWeight}>Sort by Weight</button>
+			<HogForm onFormSubmit={handleSubmit}/>
 			<div className="ui grid container">
-				{hogsToDisplay.map(hog =>
-				 	<HogTile key={hog.name} name={hog.name} image={hog.image} specialty={hog.specialty} weight={hog.weight} greased={hog.greased} highestMedalAchieved={hog["highest medal achieved"]}/>)}
+				{pigs.map(hog =>
+				 	<HogTile key={hog.name} onHide={()=>handleHide(hog.name)} name={hog.name} image={hog.image} specialty={hog.specialty} weight={hog.weight} greased={hog.greased} highestMedalAchieved={hog["highest medal achieved"]}/>)}
 			</div>
 			
 
